@@ -1,15 +1,10 @@
-use axum::{
-    Router, 
-    routing::{get},
-};
+use axum::{routing::{get, post}, Router};
 
-use crate::router::routes::{
-    root_route::root,
-    hello_route::hello,
-};
+use crate::router::routes::{create_user_route::create_user, hello_route::hello, root_route::root};
 
-pub async fn mount_router () -> Router {
+pub fn mount_router() -> Router {
     Router::new()
-    .route("/", get(root))
-    .route("/hello", get(hello))
+        .route("/", get(root))
+        .route("/hello", get(hello))
+        .route("/create_user", post(create_user))
 }
