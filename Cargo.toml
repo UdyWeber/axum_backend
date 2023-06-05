@@ -7,8 +7,14 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6.18"
+chrono = "0.4.26"
+diesel = { version = "2.1.0", features = ["postgres", "chrono"] }
+dotenv = "0.15.0"
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 tokio = { version = "1.28.2", features = ["full"] }
 tracing = "0.1.37"
 tracing-subscriber = "0.3.17"
+validator = { version = "0.16.0", features = ["derive"] }
+bb8 = "0.8.1"
+diesel-async = { version = "0.3.0", features = ["bb8", "postgres"]}

@@ -1,16 +1,28 @@
 use std::net::SocketAddr;
 
+mod db;
+mod models;
 mod router;
+mod schema;
 
 use router::router::mount_router;
+
+use crate::db::establish_connection;
+
+mod generics {
+    use diesel_async::{pooled_connection::AsyncDieselConnectionManager, AsyncPgConnection};
+    pub type Pool = bb8::Pool<AsyncDieselConnectionManager<AsyncPgConnection>>;
+}
 
 #[tokio::main]
 async fn main() {
     // initialize tracing
     tracing_subscriber::fmt::init();
 
+    let connection_pool = establish_connection().await;
+
     // build our application with a route
-    let app = mount_router();
+    let app = mount_router(connection_pool);
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
     tracing::info!("listening on {}", addr);
@@ -19,9 +31,4 @@ async fn main() {
         .serve(app.into_make_service())
         .await
         .unwrap();
-}
-
-struct Testimonial<'s> {
-    pub name: &'s str,
-    pub comment: &'s str,
 }

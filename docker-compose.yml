@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "33124:33124"
+    expose:
+      - "33124"
+    environment:
+      POSTGRES_USER: "axum"
+      POSTGRES_PASSWORD: "axum#1234"
+      POSTGRES_DB: "axumdb"
+    logging:
+      options:
+        max-size: "10m"
+    command: [ "postgres", "-c", "log_statement=all", "-p", "33124"]
+
+volumes:
+  postgres_data:
