@@ -1,11 +1,11 @@
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
-struct Response<T> {
+struct BacksonResponse<T: Serialize> {
     message: String,
     code: u16,
     #[serde(default)]
-    additional_data: Option<T>,
+    data: Option<T>,
 }
 
 pub fn response_message(
@@ -13,8 +13,8 @@ pub fn response_message(
     message: String,
     additional_data: Option<impl Serialize>,
 ) -> impl IntoResponse {
-    let response = Response {
-        additional_data: additional_data,
+    let response = BacksonResponse {
+        data: additional_data,
         code: status_code.as_u16(),
         message: message,
     };
