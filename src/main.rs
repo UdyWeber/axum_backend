@@ -1,4 +1,4 @@
-use std::net::SocketAddr;
+use std::{net::SocketAddr, env::var};
 
 mod db;
 mod models;
@@ -21,9 +21,11 @@ async fn main() {
 
     let connection_pool = establish_connection().await;
 
+    let port = var("SERVER_PORT").unwrap().parse::<u16>().unwrap();
+
     // build our application with a route
     let app = mount_router(connection_pool);
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
     tracing::info!("listening on {}", addr);
 
