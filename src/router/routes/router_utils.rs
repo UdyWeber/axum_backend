@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 struct BacksonResponse<T: Serialize> {
     message: String,
     code: u16,
-    #[serde(default)]
     data: Option<T>,
 }
 
@@ -22,9 +21,7 @@ pub fn response_message(
     (status_code, Json(response).into_response())
 }
 
-pub fn internal_error<E>(err: E) -> (StatusCode, String)
-where
-    E: std::error::Error,
+pub fn internal_error<E: std::error::Error>(err: E) -> (StatusCode, String)
 {
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
 }

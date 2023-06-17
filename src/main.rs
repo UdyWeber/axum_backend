@@ -1,4 +1,4 @@
-use std::{net::SocketAddr, env::var};
+use std::{env::var, net::SocketAddr};
 
 mod db;
 mod models;
@@ -13,6 +13,7 @@ mod generics {
     use diesel_async::{pooled_connection::AsyncDieselConnectionManager, AsyncPgConnection};
     pub type Pool = bb8::Pool<AsyncDieselConnectionManager<AsyncPgConnection>>;
 }
+
 
 #[tokio::main]
 async fn main() {
