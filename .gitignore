@@ -15,4 +15,4 @@ Cargo.lock
 
 .idea/
 .vscode/
-.env
+*.env

@@ -6,7 +6,7 @@ services:
     ports:
       - "33124:33124"
     expose:
-      - "33124"
+      - "33124:33124"
     environment:
       POSTGRES_USER: "axum"
       POSTGRES_PASSWORD: "axum#1234"
@@ -15,6 +15,17 @@ services:
       options:
         max-size: "10m"
     command: [ "postgres", "-c", "log_statement=all", "-p", "33124"]
+
+  api:
+    build:
+      context: "."
+    env_file:
+      - ".compose.env"
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_started
 
 volumes:
   postgres_data:
