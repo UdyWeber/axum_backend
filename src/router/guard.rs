@@ -9,7 +9,6 @@ use axum::{
 
 use super::router::UserState;
 
-
 pub async fn guard_middleware<T>(
     mut request: Request<T>,
     next: Next<T>,
@@ -18,7 +17,7 @@ pub async fn guard_middleware<T>(
         Ok(token) => token,
         Err(e) => return Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     };
-    
+
     // Setting Up Middle Extension to get in other routes
     request
         .extensions_mut()

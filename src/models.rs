@@ -1,12 +1,13 @@
 use diesel::{Insertable, Queryable, Selectable};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 use validator::{Validate, ValidationError};
 
 use crate::schema::testimonials::{self};
 
 #[derive(Serialize, Selectable, Queryable, Debug)]
 pub struct Testimonial {
-    uuid: i32,
+    id: Uuid,
     comment: String,
     commenter: String,
     project_name: String,

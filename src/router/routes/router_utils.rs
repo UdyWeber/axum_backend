@@ -21,7 +21,6 @@ pub fn response_message(
     (status_code, Json(response).into_response())
 }
 
-pub fn internal_error<E: std::error::Error>(err: E) -> (StatusCode, String)
-{
+pub fn internal_error<E: std::error::Error>(err: E) -> (StatusCode, String) {
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
 }

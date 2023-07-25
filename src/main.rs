@@ -14,7 +14,6 @@ mod generics {
     pub type Pool = bb8::Pool<AsyncDieselConnectionManager<AsyncPgConnection>>;
 }
 
-
 #[tokio::main]
 async fn main() {
     // initialize tracing

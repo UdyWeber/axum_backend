@@ -1,13 +1,14 @@
 use axum::{
     middleware,
     routing::{get, post},
-    Router
+    Router,
 };
 
 use super::{
     guard::guard_middleware,
-    routes::testimonial_route::{
-        create_testimonial, get_testimonials, get_testimonials_total_count,
+    routes::{
+        reaction_route::get_reactions,
+        testimonial_route::{create_testimonial, get_testimonials, get_testimonials_total_count},
     },
 };
 use crate::{
@@ -21,7 +22,6 @@ pub struct UserState {
 }
 
 pub fn mount_router(app_state: Pool) -> Router {
-
     Router::new()
         .route("/", get(root))
         .route("/hello", get(hello))
@@ -29,6 +29,7 @@ pub fn mount_router(app_state: Pool) -> Router {
         .route("/testimonial", post(create_testimonial))
         .route("/testimonial/list", get(get_testimonials))
         .route("/testimonial/count", get(get_testimonials_total_count))
+        .route("/reactions/list/:project_name", get(get_reactions))
         .layer(middleware::from_fn(guard_middleware))
         .with_state(app_state)
 }

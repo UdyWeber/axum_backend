@@ -42,11 +42,7 @@ pub async fn get_testimonials(
 
     match request_data.validate() {
         Ok(_) => (),
-        Err(e) => return response_message(
-            StatusCode::BAD_REQUEST, 
-            e.to_string(), 
-            None
-        ),
+        Err(e) => return response_message(StatusCode::BAD_REQUEST, e.to_string(), None),
     }
 
     let per_page = request_data.per_page as i64;
