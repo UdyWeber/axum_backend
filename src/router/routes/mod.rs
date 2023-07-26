@@ -1,3 +1,4 @@
+pub mod create_reaction;
 pub mod hello_route;
 pub mod reaction_route;
 pub mod root_route;

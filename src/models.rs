@@ -3,7 +3,10 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::{Validate, ValidationError};
 
-use crate::schema::testimonials::{self};
+use crate::schema::{
+    reactions::{self},
+    testimonials::{self},
+};
 
 #[derive(Serialize, Selectable, Queryable, Debug)]
 pub struct Testimonial {
@@ -71,4 +74,23 @@ impl PaginationData {
             total_count: total_count,
         }
     }
+}
+
+#[derive(Serialize, Selectable, Queryable, Debug)]
+pub struct Reaction {
+    pub id: Uuid,
+    pub project_name: String,
+    pub reaction_asset: String,
+    pub reacter_unique_id: String,
+}
+
+#[derive(Validate, Deserialize, Insertable)]
+#[diesel(table_name = reactions)]
+pub struct CreateReaction {
+    #[validate(custom = "validate_string")]
+    pub reaction_asset: String,
+    #[validate(custom = "validate_string")]
+    pub reacter_unique_id: String,
+    #[validate(custom = "validate_string")]
+    pub project_name: String,
 }
