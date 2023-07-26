@@ -19,3 +19,4 @@ validator = { version = "0.16.0", features = ["derive"] }
 bb8 = "0.8.1"
 diesel-async = { version = "0.3.0", features = ["bb8", "postgres"]}
 uuid = { version = "1.4.0", features = ["serde", "v4"] }
+rayon = "1.7.0"

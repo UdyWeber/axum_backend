@@ -7,6 +7,7 @@ use diesel::{dsl::count, ExpressionMethods, QueryDsl};
 use diesel_async::RunQueryDsl;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
+use rayon::prelude::*;
 
 use super::router_utils::{internal_error, response_message};
 use crate::{generics::Pool, models::validate_string, schema::reactions};
@@ -34,7 +35,7 @@ pub async fn get_reactions(
 
     let mut connection = pool.get_owned().await.map_err(internal_error).unwrap();
 
-    let count_with_asset = reactions::table
+    let count_with_asset: Vec<(i64, String)> = reactions::table
         .filter(reactions::project_name.eq(&request_data.project_name))
         .group_by(reactions::reaction_asset)
         .select((count(reactions::id), reactions::reaction_asset))
@@ -43,13 +44,12 @@ pub async fn get_reactions(
         .map_err(internal_error)
         .unwrap_or(vec![]);
 
-    let reactions = count_with_asset
-        .into_iter()
+    let reactions: Vec<ReactionItem> = count_with_asset.into_par_iter()
         .map(|(count, asset)| ReactionItem {
             counter: count,
             reaction_asset: asset,
         })
-        .collect::<Vec<ReactionItem>>();
+        .collect();
 
     response_message(
         StatusCode::OK,
