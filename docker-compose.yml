@@ -24,6 +24,7 @@ services:
   api:
     build:
       context: "."
+    image: "udyweber/axum_backend:latest"
     env_file:
       - ".compose.env"
     ports:
