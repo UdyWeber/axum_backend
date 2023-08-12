@@ -1,8 +1,6 @@
 pub mod create_reaction;
-pub mod hello_route;
-pub mod reaction_route;
+pub mod create_testimonial;
+pub mod get_reaction;
+pub mod get_testimonial;
+pub mod get_testimonial_count;
 pub mod root_route;
-pub mod testimonial_route;
-pub mod user_route;
-
-mod router_utils;

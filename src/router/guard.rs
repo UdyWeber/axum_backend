@@ -7,21 +7,15 @@ use axum::{
     response::Response,
 };
 
-use super::router::UserState;
-
 pub async fn guard_middleware<T>(
-    mut request: Request<T>,
+    request: Request<T>,
     next: Next<T>,
 ) -> Result<Response, (StatusCode, String)> {
+    // Simple Auth
     let auth_token = match var("REQUEST_AUTH_TOKEN") {
         Ok(token) => token,
         Err(e) => return Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     };
-
-    // Setting Up Middle Extension to get in other routes
-    request
-        .extensions_mut()
-        .insert(UserState { name: "Waj".into() });
 
     // Token Based Authorization using typed_headers
     let token = request

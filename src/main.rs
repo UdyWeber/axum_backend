@@ -1,13 +1,12 @@
 use std::{env::var, net::SocketAddr};
 
-mod db;
-mod models;
+pub mod database;
+pub mod models;
 mod router;
-mod schema;
-
+pub mod utils;
 use router::router::mount_router;
 
-use crate::db::establish_connection;
+use crate::database::db::establish_connection;
 
 mod generics {
     use diesel_async::{pooled_connection::AsyncDieselConnectionManager, AsyncPgConnection};
@@ -16,7 +15,6 @@ mod generics {
 
 #[tokio::main]
 async fn main() {
-    // initialize tracing
     tracing_subscriber::fmt::init();
 
     let connection_pool = establish_connection().await;
@@ -25,6 +23,7 @@ async fn main() {
 
     // build our application with a route
     let app = mount_router(connection_pool);
+
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
     tracing::info!("listening on {}", addr);

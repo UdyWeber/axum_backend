@@ -1,11 +1,7 @@
 use axum::{http::StatusCode, response::IntoResponse, Json};
-use serde::{Deserialize, Serialize};
-#[derive(Serialize, Deserialize)]
-struct BacksonResponse<T: Serialize> {
-    message: String,
-    code: u16,
-    data: Option<T>,
-}
+use serde::Serialize;
+
+use crate::models::generic::BacksonResponse;
 
 pub fn response_message(
     status_code: StatusCode,

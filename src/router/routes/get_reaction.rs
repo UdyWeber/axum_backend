@@ -5,24 +5,15 @@ use axum::{
 };
 use diesel::{dsl::count, ExpressionMethods, QueryDsl};
 use diesel_async::RunQueryDsl;
-use serde::{Deserialize, Serialize};
-use validator::Validate;
 use rayon::prelude::*;
+use validator::Validate;
 
-use super::router_utils::{internal_error, response_message};
-use crate::{generics::Pool, models::validate_string, schema::reactions};
-
-#[derive(Deserialize, Serialize, Validate)]
-pub struct GetReactions {
-    #[validate(custom = "validate_string")]
-    pub project_name: String,
-}
-
-#[derive(Serialize)]
-pub struct ReactionItem {
-    pub reaction_asset: String,
-    pub counter: i64,
-}
+use crate::{
+    database::schema::reactions,
+    generics::Pool,
+    models::reaction::{GetReactions, ReactionItem},
+    router::router_utils::{internal_error, response_message},
+};
 
 pub async fn get_reactions(
     State(pool): State<Pool>,
@@ -44,7 +35,8 @@ pub async fn get_reactions(
         .map_err(internal_error)
         .unwrap_or(vec![]);
 
-    let reactions: Vec<ReactionItem> = count_with_asset.into_par_iter()
+    let reactions: Vec<ReactionItem> = count_with_asset
+        .into_par_iter()
         .map(|(count, asset)| ReactionItem {
             counter: count,
             reaction_asset: asset,

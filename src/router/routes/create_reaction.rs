@@ -4,12 +4,11 @@ use diesel_async::RunQueryDsl;
 use validator::Validate;
 
 use crate::{
+    database::schema::reactions,
     generics::Pool,
-    models::{CreateReaction, Reaction},
-    schema::reactions,
+    models::reaction::{CreateReaction, Reaction},
+    router::router_utils::{internal_error, response_message},
 };
-
-use super::router_utils::{internal_error, response_message};
 
 pub async fn create_reaction(
     State(pool): State<Pool>,

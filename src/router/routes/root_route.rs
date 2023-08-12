@@ -1,13 +1,11 @@
-use axum::{http::StatusCode, response::IntoResponse, Extension};
+use axum::{http::StatusCode, response::IntoResponse};
 
-use crate::router::router::UserState;
+use crate::router::router_utils::response_message;
 
-use super::router_utils::response_message;
-
-pub async fn root(Extension(user): Extension<UserState>) -> impl IntoResponse {
+pub async fn root() -> impl IntoResponse {
     response_message(
         StatusCode::OK,
-        format!("Name of user in Middleware: {}", user.name),
+        format!("Message: brQHQC5MXWFMyZDq9Cq91baq3UusguX6WLX/o7Ve4GNsphBFxomTFbCtcYsaiDiWxnxV8gPFI6bAzviWAp2khhPwt1soNk7zxY6OR+LcZ6kxntUAUu2KgbDTtCa8o388"),
         Some(()),
     )
 }

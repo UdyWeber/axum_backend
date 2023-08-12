@@ -20,5 +20,3 @@ diesel::table! {
 }
 
 diesel::allow_tables_to_appear_in_same_query!(reactions, testimonials,);
-
-diesel::allow_columns_to_appear_in_same_group_by_clause!(reactions::reaction_asset, reactions::id);
