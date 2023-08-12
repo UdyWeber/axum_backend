@@ -3,8 +3,8 @@ FROM rust:1.70 as builder
 
 # Adding new rust project to /opt
 WORKDIR /opt
-RUN USER=root cargo new --bin backson
-WORKDIR /opt/backson
+# RUN USER=root cargo new --bin backson
+# WORKDIR /opt/backson
 
 # Copying toml and lock to build the project depts for the caching stage
 COPY ./Cargo.lock ./Cargo.lock
@@ -28,8 +28,11 @@ RUN apt-get update && apt-get install -y \
     gcc
 
 # Copying the executable file from builder stage
-WORKDIR /opt/backson
-COPY --from=builder /opt/backson/target/release/axum_backend .
+# WORKDIR /opt/backson
+WORKDIR /opt
+# COPY --from=builder /opt/backson/target/release/axum_backend .
+COPY --from=builder /opt/target/release/axum_backend .
 
 # Run the executable
-CMD ["/opt/backson/axum_backend"]
+# CMD ["/opt/backson/axum_backend"]
+CMD ["/opt/axum_backend"]
