@@ -1,20 +1,25 @@
+version: "1.0"
+
 services:
   postgres:
     image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "33124:33124"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     expose:
-      - "33124:33124"
-    environment:
-      POSTGRES_USER: "axum"
-      POSTGRES_PASSWORD: "axum#1234"
-      POSTGRES_DB: "axumdb"
+      - "${POSTGRES_PORT}"
+    env_file:
+      - ".env"
     logging:
       options:
         max-size: "10m"
-    command: [ "postgres", "-c", "log_statement=all", "-p", "33124"]
+    command: [ "postgres", "-c", "log_statement=all", "-p", "${POSTGRES_PORT}"]
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p ${POSTGRES_PORT}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
   api:
     build:
@@ -25,7 +30,7 @@ services:
       - "3000:3000"
     depends_on:
       postgres:
-        condition: service_started
+        condition: service_healthy
 
 volumes:
   postgres_data:
