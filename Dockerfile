@@ -7,13 +7,13 @@ WORKDIR /opt
 # WORKDIR /opt/backson
 
 # Copying toml and lock to build the project depts for the caching stage
-COPY ./Cargo.lock ./Cargo.lock
-COPY ./Cargo.toml ./Cargo.toml
-RUN cargo build --release
+#COPY ./Cargo.lock ./Cargo.lock
+#COPY ./Cargo.toml ./Cargo.toml
+#RUN cargo build --release
 
 # Remove blank project with dependencies built and adding the real one
 RUN rm ./src/*.rs
-RUN rm ./target/release/deps/axum_backend*
+# RUN rm ./target/release/deps/axum_backend*
 
 # Adding the new one and building it on top of the cached dependencies
 ADD ./src ./src
