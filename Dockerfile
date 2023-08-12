@@ -12,10 +12,11 @@ WORKDIR /opt
 #RUN cargo build --release
 
 # Remove blank project with dependencies built and adding the real one
-RUN rm ./src/*.rs
+# RUN rm ./src/*.rs
 # RUN rm ./target/release/deps/axum_backend*
 
 # Adding the new one and building it on top of the cached dependencies
+ADD ./Cargo.toml ./Cargo.toml
 ADD ./src ./src
 RUN cargo build --release
 
